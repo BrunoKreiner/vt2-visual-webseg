@@ -1,0 +1,54 @@
+Review 1:
+Overall evaluation	
+1: (weak accept)
+Strengths:
+The authors made a commendable effort to reimplement YOLO-WS, which is not publicly available, and provided insights into their modifications.
+Evaluating YOLOv5, YOLO-WS, and YOLOv11 using the Webis-Webseg-20 and Nano datasets adds value to the study by showcasing how modern architectures perform in visual web segmentation tasks.
+The creation of a new dataset (Nano) with high-quality, manually annotated samples is a positive contribution to the field.
+Weaknesses:
+The performance of the reimplemented YOLO-WS model falls significantly short of the original paper’s benchmarks. This discrepancy is not fully explained, leaving concerns about the effectiveness of the reimplementation.
+The evaluation primarily uses simulated data and does not explore the applicability of the proposed methods in diverse and complex real-world scenarios.
+The study lacks a thorough analysis of why the new YOLOv11 outperforms the reimplemented YOLO-WS, particularly in the context of the Nano dataset.
+The paper could benefit from a more detailed explanation of the experimental setup, particularly the rationale behind certain parameter choices (e.g., why specific input resolutions were chosen).
+While YOLOv11 shows strong performance on the Nano dataset, its performance on the Webis-Webseg-20 dataset is less impressive. The authors should address why this gap exists and what factors might contribute to this outcome.
+
+-----------------------------------------------
+
+Review 2:
+Overall evaluation	
+0: (borderline paper)
+In this paper, the authors reimplement the YOLO-WS model for web segmentation. To re-evaluate the framework, the authors of the study use both the Webis-Webseg-20 dataset (which is a pre-existing one) and propose a novel one that they developed. The latter has been annotated by experts.
+
+Overall, the paper is relevant to the conference and presents novel contributions. I am not an expert in this area, so I cannot fully judge how large the contribution to this area of research is. My overall impression is that it is a solid, yet weak novelty within web segmentation.
+
+Aside from the novelty issues, the paper is mostly well-written and can easily be read. I appreciate that the authors are direct and do not try to obfuscate their contributions with additional complexity. Hence, I recognize that the paper presents some merits and is well-done. If other reviewers, which may be more familiar with this area, do not find specific problems, it could be accepted as a short paper.
+
+In addition to this high-level feedback, the following improvements and nitpicks are described for the authors:
+- "DOM-tree analysis", introduce, or at least expand, the term DOM
+- "(..) like for important content (..)", I would rephrase the usage of the word "like" in such an academic context
+- "Webis-Webseg-20 provides ground-truth labels (..)" - this paragraph is only 1 sent, evaluate if this is appropriate
+- The "expert annotator" could be contextualized in more detail -- what makes the expert an expert? How was he/she recruited?
+- "Sec II Data & Experiments", I would avoid the ampersand in headings
+- "(..) by Hou et al." - it is not common to mention a partial list of author names in most IEEE conferences.
+- " ”combining skip connections” " uses two closing apostrophes
+- TABLE I overflows the page
+- TABL I: It may be more appealing to left-align text, and right-align numbers
+- "Tables I and II", leverage \tablename{}
+- Reduce the caption of Fig. I
+- Fig. II and II are barely readable
+- REFERENCES [5] it would be advisable to state when the reference was consulted.
+
+-----------------------------------------------
+
+Review 3:
+Overall evaluation	
+-1: (weak reject)
+Summary
+In this paper, the authors evaluate visual webpage segmentation using YOLO series of object detection models. The authors reimplement YOLO-WS and benchmark it YOLOv5 and YOLOv11.
+
+Feedback:
+1. The constructed dataset is quite small and the basic element on each page is easy for the segmentation model compared to Webibs-Webseg-20, which is also confirmed from the Figure 1 in this paper.
+2. Based on 1, some statements for the future direction may not be held, e.g., how to determine the right size to train the segmentation model and the quality of the annotations.
+3. How about the performance of implementing WBF in YOLOv11
+4. In Section 1, the authors state “we hypothesise …”. However, there is not a clear reason why such a hypothesis is true/valid?
+5. The title of this paper includes “re-evaluation and advancements” while the insights from the revaluation are limited.

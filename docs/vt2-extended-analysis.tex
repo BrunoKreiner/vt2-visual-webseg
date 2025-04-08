@@ -1,0 +1,138 @@
+\documentclass{article}  % Changed from IEEEtran to article
+\usepackage{pdfpages}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\begin{document}
+
+\title{\Large VT-2: Design and Implementation of Segmentation Algorithms for Websites}
+\author{Bruno Baptista Kreiner\\
+Institute of Computer Science (InIT) \\
+University of Applied Sciences Zurich (ZHAW) \\
+bapt@zhaw.ch}
+\date{\today}
+
+\maketitle
+
+\section{Introduction}
+As part of the VT-2 and as introductory part of the project, this document includes the short paper submitted to SDS2025 (https://sds2025.ch/). The original paper is included in Section 2, followed by additional analysis and findings.
+
+\section{Original Conference Paper}
+\includepdf[pages=-]{VT2_SDS25_SHORT_PAPER.pdf}
+
+\section{Extended Analysis}
+In this section we address additional topics not discussed in the short paper. The short paper lacks several aspects that can be analyzed further:
+
+\begin{itemize}
+\item \textbf{Web Segmentation as an Instance Segmentation Problem:} The analysis done in the original YOLO-WS paper mentioned object detection of YOLO only. However, YOLO provides an instance segmentation model. Due to the short paper's low YOLO-WS reimplementation performance, the original YOLO-WS paper might have called the task "object detection", but actually used YOLO's instance segmentation model. 
+\item \textbf{Small Objects for Object Detection:} The dataset has many small objects that hinders performance of object detection. We analyze the impact of small objects on detection performance.
+\item \textbf{Different Training Dataset Sizes:} We analyze the relationship between training set size and model performance for the Webis-Webseg-20 dataset.
+\end{itemize}
+
+Through these experiments, we aim to identify the critical factors affecting our short paper's low Webis-Webseg-20 performance.
+
+Furthermore, to extend the VT, we reimplement WEBSAM, an adapter geared towards web segmentation for Facebook's Segment Anything Model (SAM). In first tests however, this model did not train on Webis-Webseg-20 data.
+
+\subsection{Extending on Instance Segmentation}
+
+We trained YOLOv11s for instance segmentation. We choose the YOLOv11 model since it offers faster training times with a higher performance based on the short paper. Results showed a precision of 0.59 and recall of 0.411 for both bounding box and mask metrics. The approach therefore, did not improve upon the object detection results. YOLO's instance segmentation adds a mask prediction head to the standard detection architecture, which predicts a binary mask for each detected object. Web elements have regular rectangular shapes and we hypothesize that the additional complexity of mask prediction may not translate to performance gains because the bounding boxes are already the same as the masks for web elements.
+
+\subsection{Small Objects for Object Detection}
+Small objects appear in our dataset because we initially took each polygon in the multipolygon structure provided by Webis-Webseg-20's ground-truth annotations.  Details about processing this nested structure is not described in the original YOLO-WS paper. For this experiment, we spanned a bounding box based on each multipolygon structure's maximum and minimum pixel values, resulting in broader boxes whenever nested polygons existed.
+
+This approach substantially reduced the number of extremely small objects, decreasing the "autoanchors extremely small object" warnings from 28,100 out of 110,311 labels to just 4,057 out of 61,278 labels. The distribution of object sizes are as follows: 
+\begin{itemize}
+\item No boxes under 0.001\% of the image area (equivalent to a 5×5 pixel box in a 512×512 input image)
+\item 4.45\% between 0.01\% and 0.1\% of image area
+\item 23.14\% between 0.1\% and 1\% of image area
+\item 54.67\% between 1\% and 10\% of image area
+\item 15.83\% between 10\% and 50\% of image area
+\item 1.91\% over 50\% of image area
+\end{itemize}
+
+The results were surprising: The training with YOLOv11 improved precision from 0.55 to 0.64 and recall from 0.43 to 0.62. This significant performance gain suggests that the representation of complex nested web elements plays a crucial role in model performance. YOLOv5s and YOLO-WS also improved (YOLOv5s F1-Score: From 0.28 (WBF) / 0.32 (NMF) to 0.57 (WBF) / 0.61 (NMF), YOLO-WS F1-Score: From 0.27 (WBF) / 0.42 (NMS) to 0.47 (WBF) / 0.57 (NMS)). 
+%TODO: insert YOLO-WS performance here through inference_and_émetrics.ipynb
+
+This indicates that the original YOLO-WS paper likely used a similar approach to handle these structures, though this implementation detail wasn't explicitly described in their methodology. The models also didn't reach the entire performance described in the paper.
+
+%TODO: add yolov5WS and yolov5 standard webiswebseg-20 training here
+
+\subsection{Multiple Training Set sizes}
+
+To understand how the amount of training data affects model performance, we conducted experiments with increasingly large training sets, from just 8 samples to the full dataset. The validation set remained constant at 20\% of the full dataset to ensure fair comparisons across all experiments.
+
+%yolov11: 
+%    - 8 training samples: NMS: Precision 0.36 Recall 0.34, mAP50 0.30
+%    - 16 training samples: NMS: Precision 0.27 Recall 0.32, mAP50 0.21
+%    - 32 training samples: NMS: Precision 0.45 Recall 0.40, mAP50 0.38
+%    - 64 training samples: NMS: Precision 0.48 Recall 0.44, mAP50 0.43
+%    - 128 training samples: NMS: Precision 0.51 Recall 0.48, mAP50 0.46
+%    - 256 training samples: NMS: Precision 0.54 Recall 0.49, mAP50 0.49
+%    - 512 training samples: NMS: Precision 0.55 Recall 0.55, mAP50 0.52
+%    - 1024 training samples: NMS: Precision 0.54 Recall 0.55, mAP50 0.54
+%    - 2048 training samples: NMS: Precision 0.60 Recall 0.59, mAP50 0.58
+%    - 4096 training samples: NMS: Precision 0.622 Recall 0.601, mAP50 0.61
+%    - full training samples: NMS: Precision 0.64 Recall 0.62, mAP50 0.64
+
+\begin{table}[htbp]
+\caption{Performance of YOLOv11 with Different Training Set Sizes}
+\begin{center}
+\small
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
+\hline
+\textbf{Samples} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{mAP50}\\
+\hline \\
+\textbf{YOLOv11 NMS:} \\
+8 & 0.36 & 0.34 & 0.35 & 0.30 \\
+16 & 0.27 & 0.32 & 0.29 & 0.21 \\
+32 & 0.45 & 0.40 & 0.42 & 0.38 \\
+64 & 0.48 & 0.44 & 0.46 & 0.43 \\
+128 & 0.51 & 0.48 & 0.49 & 0.46 \\
+256 & 0.54 & 0.49 & 0.51 & 0.49 \\
+512 & 0.55 & 0.55 & 0.55 & 0.52 \\
+1024 & 0.54 & 0.55 & 0.55 & 0.54 \\
+2048 & 0.60 & 0.59 & 0.60 & 0.58 \\
+4096 & 0.62 & 0.60 & 0.61 & 0.61 \\
+Full & \textbf{0.64} & \textbf{0.62} & \textbf{0.63} & \textbf{0.64} \\
+\hline \\
+\textbf{Original Models from YOLO-WS Paper} \\
+YOLOv5WS & 0.71 & 0.60 & 0.65 & - \\
+YOLOv5 & 0.69 & 0.57 & 0.63 & - \\
+\hline
+\end{tabular*}
+\scriptsize The table shows the performance of each model trained on different training set variations while the validation set size remained constant at 20\% of the full dataset.
+\label{tab:training-size}
+\end{center}
+\end{table}
+
+As shown in Table \ref{tab:training-size}, performance generally improves with more training data. The performance increase is initially steep but begins to flatten as we approach 4096 samples, suggesting diminishing returns and a logarithmic progression. The 0.5 F1-score is achieved, presumably already between 256 and 512 samples. Interestingly, we observed an anomaly with 16 training samples, where performance decreased compared to just 8 samples. This suggests that with very small datasets, the specific examples included can dramatically affect outcomes, possibly due to overfitting to non-representative samples. 
+
+In contrast to our experience with the Nano dataset, Webis-Webseg-20 seems more complex for YOLO. We could attribute this to a greater complexity overall. However, Nano has 5 labels instead of none. The reason could be that Nano followed a simpler labeling strategy overall as Webis-Webseg-20's annotators followed very open annotation principles.
+
+\subsection{Extended YOLO Training Conclusion}
+
+Our extended experiments with YOLO models for web segmentation reveal insights that both clarify the findings from our original paper and point toward promising directions for future work.
+
+First, the representation of web elements during preprocessing significantly impacts model performance. By spanning bounding boxes across nested multipolygon structures instead of treating each polygon individually, we achieved substantial improvements in both precision (from 0.55 to 0.64) and recall (from 0.43 to 0.62). This finding suggests that the hierarchical structure of web elements requires special consideration during dataset preparation, and that preprocessing decisions may be as important as model architecture choices.
+
+Second, contrary to our initial expectations, instance segmentation did not substantially outperform object detection for web elements. This counterintuitive result suggests that the regular, geometrically simple nature of most web elements means that precise pixel-level masks offer diminishing returns compared to well-fitted bounding boxes. For practical applications, this finding suggests that simpler, faster object detection approaches may be preferable for web segmentation tasks.
+
+Third, the relationship between training set size and performance follows a logarithmic pattern, with significant gains from small to medium-sized datasets but diminishing returns beyond several thousand examples. This pattern differs from our experiment with Nano, a much smaller, handlabeled dataset which differentiates between 5 different website elements as labels. For practical applications, this suggests that carefully curated smaller datasets might be sufficient for web segmentation. However, we did not compare the two datasets in terms of website variability to be able to make a final conclusion in this regard. Overall, through manual evaluation, we deem the websites in the Webis-Webseg-20 dataset as not very variable since they follow less complex website standards from the 2010s. 
+ 
+\section{WEBSAM}
+WEBSAM was trained and achieved a pixel accuracy similar to the original paper (+- \%). 
+
+\section{Improving the YOLO Architecture}
+We might want to generally seperate the websites into two pictures if possible and if there is no vertical edge being cut after canny edge detection processing.
+
+\section{Conclusion \& Outlook}
+
+\section{Acknowledgements}
+
+I acknowledge the use of artificial intelligence tools, specifically for proofreading and LaTeX formatting in this work. All generated content was reviewed by me.
+
+\end{document}

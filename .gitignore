@@ -95,5 +95,27 @@ outputs
 # Data
 data/*/*
 
-# Notebooks
-notebooks/*
+# Model outputs
+models/yolov5/**
+models/yolov5-ws/**
+models/yolov11/**
+models/websam/**
+
+# Validation results
+models/yolov5/val/**
+models/yolov11/val*/**
+
+# Virtual environments
+.venv-yolov5/
+.ultralytics/
+.websam_env/
+
+.recycle_bin/
+
+# Jupyter notebook checkpoints
+evaluation/scripts/.ipynb_checkpoints/
+
+.neptune/
+.cometml-runs/
+# Comet offline logs
+comet_offline/

@@ -1,0 +1,20 @@
+Bounding Box Statistics
+======================
+
+Dataset 1: webis-webseg-20-yolo-no-tiny-segments-full
+Average bounding boxes per image: 9.00
+Total number of bounding boxes: 76433
+Total number of images: 8490
+Average bounding box area: 350028.78 pixels²
+Minimum bounding box area: 128.00 pixels²
+Maximum bounding box area: 22380544.00 pixels²
+Median bounding box area: 109509.00 pixels²
+
+Dataset 2: IIS_data_yolo_annotator_2_nano
+Average bounding boxes per image: 3.88
+Total number of bounding boxes: 388
+Total number of images: 100
+Average bounding box area: 1086133.25 pixels²
+Minimum bounding box area: 18900.00 pixels²
+Maximum bounding box area: 18553680.00 pixels²
+Median bounding box area: 605823.96 pixels²

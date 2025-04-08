@@ -1,118 +1,93 @@
-# vt2-webseg
+# vt2-visual-webseg
 
-## Tools used in this project
-* [hydra](https://hydra.cc/): Manage configuration files - [article](https://mathdatasimplified.com/stop-hard-coding-in-a-data-science-project-use-configuration-files-instead/)
-* [pdoc](https://github.com/pdoc3/pdoc): Automatically create an API documentation for your project
-* [pre-commit plugins](https://pre-commit.com/): Automate code reviewing formatting
-
+Research project on web segmentation using YOLO models and WEB-SAM.
 
 ## Project Structure
 
 ```bash
 .
-├── config                      
-│   ├── main.yaml                   # Main configuration file
-│   ├── model                       # Configurations for training model
-│   │   ├── model1.yaml             # First variation of parameters to train model
-│   │   └── model2.yaml             # Second variation of parameters to train model
-│   └── process                     # Configurations for processing data
-│       ├── process1.yaml           # First variation of parameters to process data
-│       └── process2.yaml           # Second variation of parameters to process data
-├── data            
-│   ├── final                       # data after training the model
-│   ├── processed                   # data after processing
-│   └── raw                         # raw data
-├── docs                            # documentation for your project
-├── .gitignore                      # ignore files that cannot commit to Git
-├── Makefile                        # store useful commands to set up the environment
-├── models                          # store models
-├── notebooks                       # store notebooks
-├── pyproject.toml                  # Configure black
-
-├── README.md                       # describe your project
-├── src                             # store source code
-│   ├── __init__.py                 # make src a Python module 
-│   ├── process.py                  # process data before training model
-│   ├── train_model.py              # train model
-│   └── utils.py                    # store helper functions
-└── tests                           # store tests
-    ├── __init__.py                 # make tests a Python module 
-    ├── test_process.py             # test functions for process.py
-    └── test_train_model.py         # test functions for train_model.py
+├── data                            # Dataset directory (not tracked in git)
+├── docs                            # Documentation and paper drafts
+├── evaluation                      # Evaluation scripts and tools
+│   ├── preprocessing_comparison    # Tools for comparing preprocessing methods
+│   └── scripts                     # Evaluation scripts including inference and metrics
+├── global_utils                    # Global utility functions
+├── models                          # Trained models and outputs
+│   ├── cormier                     # Cormier model outputs
+│   ├── meier                       # Meier model outputs
+│   ├── websam                      # WEB-SAM model outputs and runs
+│   ├── yolov11                     # YOLOv11 model outputs and validation results
+│   ├── yolov5                      # YOLOv5 model outputs and validation results
+│   └── yolov5-ws                   # YOLOv5-WS model outputs
+├── notebooks                       # Jupyter notebooks for analysis
+├── src                             # Source code
+│   ├── bcubed-f1                   # BCubed F1 score implementation
+│   ├── websam                      # WEB-SAM implementation
+│   │   ├── segment_anything        # SAM model implementation
+│   │   ├── demo                    # Demo web application
+│   │   ├── notebooks               # WEB-SAM notebooks
+│   │   └── scripts                 # WEB-SAM scripts
+│   └── yolov5                      # YOLOv5 implementation
+│       ├── models                  # YOLOv5 model definitions
+│       ├── utils                   # YOLOv5 utilities
+│       └── data                    # YOLOv5 data utilities
+├── .gitignore                      # Git ignore file
+├── ensemble_boxes_wbf.py           # Weighted Box Fusion implementation
+├── pyproject.toml                  # Project configuration
+└── README.md                       # Project documentation
 ```
 
-## Set up the environment
+## Set up the environment for training
 
-
-1. Create the virtual environment:
-```bash
-python3 -m venv venv
-```
-2. Activate the virtual environment:
-
-- For Linux/MacOS:
-```bash
-source venv/bin/activate
-```
-- For Command Prompt:
-```bash
-.\venv\Scripts\activate
-```
-3. Install dependencies:
-- To install all dependencies, run:
-```bash
-pip install -r requirements-dev.txt
-```
-- To install only production dependencies, run:
-```bash
-pip install -r requirements.txt
-```
-- To install a new package, run:
-```bash
-pip install <package-name>
-```
-
-
-## View and alter configurations
-To view the configurations associated with a Pythons script, run the following command:
-```bash
-python src/process.py --help
-```
-Output:
-```yaml
-process is powered by Hydra.
-
-== Configuration groups ==
-Compose your configuration from those groups (group=option)
-
-model: model1, model2
-process: process1, process2
-
-
-== Config ==
-Override anything in the config (foo.bar=value)
-
-process:
-  use_columns:
-  - col1
-  - col2
-model:
-  name: model1
-data:
-  raw: data/raw/sample.csv
-  processed: data/processed/processed.csv
-  final: data/final/final.csv
-```
-
-To alter the configurations associated with a Python script from the command line, run the following:
-```bash
-python src/process.py data.raw=sample2.csv
-```
-
-## Auto-generate API documentation
-
-To auto-generate API document for your project, run:
+1. For YOLO-WS with YOLOv5 training
 
 ```bash
-make docs
+python3 -m venv yolov5-WS
+source yolov5-WS/bin/activate
+pip install -r yolov5-requirements.txt
 ```
+
+Then in the console:
+
+```bash
+python src/yolov5/train_yolowsv5.py --data ../data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml --cfg src/yolov5/models/yolov5sWS.yaml --hyp src/hyp_yolows.yaml --imgs 512 --batch-size 32 --epochs 300 --project models/yolov5-ws --name exp
+```
+
+2. For regular YOLOv5 training
+
+```bash
+python3 -m venv yolov5-WS
+source yolov5-WS/bin/activate
+pip install -r yolov5-requirements.txt
+```
+
+```bash
+python src/yolov5/train.py --data ../data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml --imgsz 512 --batch-size 32 --epochs 300 --project models/yolov5 --name yolov5-imgsz512-no-tiny-segments-full
+```
+
+3. For YOLO-WS with Ultralytics YOLOv11 training
+
+```bash
+python3 -m venv ultralytics
+source ultralytics/bin/activate
+pip install ultralytics
+```
+
+Then in the console (for standard parameters):
+
+```bash
+yolo detect train data=../data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml model=yolo11s.pt imgsz=512 batch=32 epochs=300 project=models/yolov11 name=exp
+```
+
+4. For WEB-SAM training
+
+```bash
+python3 -m venv websam
+source websam/bin/activate
+pip install -r websam-requirements.txt
+```
+
+```bash
+# Note: WEB-SAM already stores outputs in models/websam directory
+```
+

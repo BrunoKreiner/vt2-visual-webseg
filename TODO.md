@@ -1,0 +1,28 @@
+- everything in @
+- Put updated final response into /docs/review_response.txt ☑ 08.04.2025
+
+- Retrain websam with version 3 (@process-webis-webseg-20-websam-better)
+- Highlight and Document the version improvements between process-webis-webseg-20 versions:
+    Key Implementation Changes and Improvements
+    - From Version 1 to Version 2:
+        - Library Change: Switched from PIL's drawing functions to OpenCV's more efficient cv2.fillPoly
+        - Memory Efficiency: Pre-allocated numpy array with correct dimensions instead of creating and converting PIL Image
+        - Structural Change: Integrated into a class structure with better error handling
+        - Type Specification: Added explicit dtype=np.uint8 for mask array
+        - Naming Improvement: More descriptive function name (create_mask_from_polygons vs polygon_to_mask)
+    - From Version 2 to Version 3:
+        - Proper Multipolygon Handling: Correctly interprets the nested structure of multipolygons
+        - Hole Recognition: Critical addition of hole handling logic (lines 141-144)
+        - Semantic Clarity: Improved docstring ("with proper hole handling")
+        - Structural Understanding: Recognizes that the first ring is the outer boundary and subsequent rings are holes
+        - Nested Loop Structure: Changed to properly iterate through the multipolygon hierarchy
+        - Version 3 correctly handles the GeoJSON-like structure of multipolygons where:
+            - A multipolygon contains multiple polygons
+            - Each polygon has one or more rings
+            - The first ring defines the outer boundary
+            - Subsequent rings define holes
+- Validate manually the splits by split algorithm in @process-webis-webseg-20-websam-better-with-split
+- Retrain websam with split (@process-webis-webseg-20-websam-better-with-split)
+- How exactly do segmentation (websam) and object detection (yolo-ws) compare to each other with the b1-cubed metric? is this correctly implemented?
+- Fully document and test BCubed F1 implementation
+- Document inference time between yolo-ws and websam, memory and practical considerations

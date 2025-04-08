@@ -1,0 +1,52 @@
+Thank you very much for your feedback. We will address the concerns below, starting with reviewer 1.
+
+
+
+Reviewer 1:
+
+Performance Discrepancy:
+During our further work, we identified the reason for the performance discrepancy between our YOLO-WS implementation and the original YOLO-WS paper. Our initial implementation processed each polygon in the multipolygon structures separately. This resulted in many small boxes. The original YOLO-WS paper did not explicitly describe how these structures were processed. When we used bounding boxes spanning across the entire multipolygon structure of one annotation at a time, the performance improved:
+- YOLOv5: F1-Score improved from 0.32 to 0.61 (NMS) (still 0.02 lower than the reported YOLOv5 performance in the original YOLO-WS paper)
+- YOLO-WS: F1-Score improved from 0.42 to 0.57 (NMS) (still lower than all the YOLO types in their ablation experiment, even the ones not using WBF as post-processing)
+- YOLOv11: achieved F1-Score of 0.63 (NMS) (beating YOLOv5 and YOLO-WS in our tests)
+
+The original YOLO-WS paper did not address the increased complexity of using all individual polygons in the Webis-Webseg-20 dataset.
+
+Simulated data:
+We want to clarify that both datasets consist of real-world website screenshots. We appreciate the concern regarding real-world scenarios and would like to approach concrete examples such as the improved classification of websites and web agents in further research.
+
+Performance Gap YOLOv11 vs YOLO-WS:
+The natural development of the YOLO models contributed to increased performance as YOLOv11 introduced various improvements compared to YOLOv5. The YOLOv11 model seems to be much more robust especially for Webis-Webseg-20.
+
+The rationale behind input size hypothesis:
+Our rationale behind comparing input size differences was to show that a larger input size or retaining aspect ratio could improve performance due to the nature of rectangular website screenshots and the presence of small website elements in the Webis-Webseg-20 dataset, as shown in Figure 3 in the paper. We hypothesized that this change would impact performance positively as website elements are squished together when images are resized to 512x512 pixels. However, the improvements weren't substantial for the Nano dataset, and the models proved more robust than expected. We acknowledge that we must rerun the experiment for the Webis-Webseg-20 dataset with the changes to the multipolygons discussed. Any other parameter was taken from the original YOLO-WS paper.
+
+Performance Differences between Nano and Webis-Webseg-20:
+We will respond to this point in detail in the response for reviewer 3.
+
+
+
+Reviewer 2:
+
+We thank the reviewer for the helpful suggestions and will especially address the lack of context regarding the expert annotators. The expert annotator is part of our institute and familiar with website segmentation tasks, making them very reliable.
+
+
+
+Reviewer 3:
+
+Nano vs. Webis-Webseg-20 and future statements:
+The processed Webis-Webseg-20 dataset averages over double the amount of bounding boxes (9.00 vs. 3.88), making the learning task harder. The average bounding box area is also much smaller, as shown in Figures 1 and 2 in the paper. However, our dataset has 5 different labels, whereas Webis-Webseg-20 has only one. We conclude that while our dataset might have simpler bounding boxes, the labeling task is more complex, showing that different data and labeling strategies might lead to much higher performance with far fewer data than previously thought if we look at purely visual object detection/segmentation. The Nano dataset also used one single expert annotator, while Webis-Webseg-20 used multiple non-experts from Amazon Mechanical Turk, which might affect performance.
+The low Webis-Webseg-20 performance can also be attributed to a higher variety of websites. We will adjust our conclusion accordingly since the following sentence in our paper's conclusion does not accurately represent our results: "The contrast between Nano and Webis-Webseg-20 results shows the importance of high-quality data.". It is better to say that carefully curated smaller datasets might be sufficient for specific web object detection or segmentation tasks.
+
+YOLOv11 with WBF performance:
+We encountered technical challenges and cannot report reliable WBF results. We acknowledge this limitation and plan to investigate it in future work.
+
+Regarding the hypothesis in Section 1:
+We explain our rationale regarding the hypothesis in the second to last point in the response to reviewer 1.
+
+Regarding the re-evaluation:
+We gained insights into the critical role of the multipolygon data preprocessing that significantly impacts performance. Our bounding box analysis revealed that dataset characteristics strongly influence model performance. We also demonstrated that carefully curated smaller datasets like Nano can achieve high performance for specific web segmentation tasks. Finally, we found that the most recent YOLO architecture can outperform earlier models. We will highlight these insights better in the final version of our paper.
+
+
+
+We appreciate the feedback, which has helped us identify important areas for improvement. We will incorporate the changes in our final version.

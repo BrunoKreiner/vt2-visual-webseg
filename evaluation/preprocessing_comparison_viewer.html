@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Preprocessing Method Comparison</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .image-container {
+            margin: 20px auto;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .description {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-left: 4px solid #4682b4;
+            border-radius: 4px;
+        }
+        h2 {
+            color: #4682b4;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comparison of Preprocessing Methods for Web Segmentation</h1>
+    
+    <div class="description">
+        <p><strong>Left:</strong> Original method - Each polygon within a multipolygon is processed separately, resulting in many small, fragmented bounding boxes.</p>
+        <p><strong>Right:</strong> Improved method - The entire multipolygon structure is processed as a single unit, creating a single bounding box that encompasses all points from all polygons in the multipolygon.</p>
+    </div>
+
+    <h2>Example 1: Website ID 000308</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/000308_comparison.png" alt="Comparison for website 000308">
+    </div>
+
+    <h2>Example 2: Website ID 000515</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/000515_comparison.png" alt="Comparison for website 000515">
+    </div>
+
+    <h2>Example 3: Website ID 001199</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/001199_comparison.png" alt="Comparison for website 001199">
+    </div>
+
+    <h2>Example 4: Website ID 001265</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/001265_comparison.png" alt="Comparison for website 001265">
+    </div>
+
+    <h2>Example 5: Website ID 001448</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/001448_comparison.png" alt="Comparison for website 001448">
+    </div>
+
+    <h2>Example 6: Website ID 001532</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/001532_comparison.png" alt="Comparison for website 001532">
+    </div>
+
+    <h2>Example 7: Website ID 001743</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/001743_comparison.png" alt="Comparison for website 001743">
+    </div>
+
+    <h2>Example 8: Website ID 002606</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/002606_comparison.png" alt="Comparison for website 002606">
+    </div>
+
+    <h2>Example 9: Website ID 003045</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/003045_comparison.png" alt="Comparison for website 003045">
+    </div>
+
+    <h2>Example 10: Website ID 003073</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/003073_comparison.png" alt="Comparison for website 003073">
+    </div>
+
+    <h2>Example 11: Website ID 003554</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/003554_comparison.png" alt="Comparison for website 003554">
+    </div>
+
+    <h2>Example 12: Website ID 003777</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/003777_comparison.png" alt="Comparison for website 003777">
+    </div>
+
+    <h2>Example 13: Website ID 004356</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/004356_comparison.png" alt="Comparison for website 004356">
+    </div>
+
+    <h2>Example 14: Website ID 005862</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/005862_comparison.png" alt="Comparison for website 005862">
+    </div>
+
+    <h2>Example 15: Website ID 006192</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/006192_comparison.png" alt="Comparison for website 006192">
+    </div>
+
+    <h2>Example 16: Website ID 006600</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/006600_comparison.png" alt="Comparison for website 006600">
+    </div>
+
+    <h2>Example 17: Website ID 006885</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/006885_comparison.png" alt="Comparison for website 006885">
+    </div>
+
+    <h2>Example 18: Website ID 007097</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/007097_comparison.png" alt="Comparison for website 007097">
+    </div>
+
+    <h2>Example 19: Website ID 007468</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/007468_comparison.png" alt="Comparison for website 007468">
+    </div>
+
+    <h2>Example 20: Website ID 007682</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/007682_comparison.png" alt="Comparison for website 007682">
+    </div>
+
+    <h2>Example 21: Website ID 007789</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/007789_comparison.png" alt="Comparison for website 007789">
+    </div>
+
+    <h2>Example 22: Website ID 008745</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/008745_comparison.png" alt="Comparison for website 008745">
+    </div>
+
+    <h2>Example 23: Website ID 009581</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/009581_comparison.png" alt="Comparison for website 009581">
+    </div>
+
+    <h2>Example 24: Website ID 009818</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/009818_comparison.png" alt="Comparison for website 009818">
+    </div>
+
+    <h2>Example 25: Website ID 009929</h2>
+    <div class="image-container">
+        <img src="./preprocessing_comparison/009929_comparison.png" alt="Comparison for website 009929">
+    </div>
+</body>
+</html>
