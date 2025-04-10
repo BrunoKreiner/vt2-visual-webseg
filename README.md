@@ -43,51 +43,64 @@ Research project on web segmentation using YOLO models and WEB-SAM.
 
 ```bash
 python3 -m venv yolov5-WS
-source yolov5-WS/bin/activate
+source .yolov5-WS/bin/activate
 pip install -r yolov5-requirements.txt
 ```
 
-Then in the console:
+Then in the console (from the base directory of the project):
 
 ```bash
-python src/yolov5/train_yolowsv5.py --data ../data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml --cfg src/yolov5/models/yolov5sWS.yaml --hyp src/hyp_yolows.yaml --imgs 512 --batch-size 32 --epochs 300 --project models/yolov5-ws --name exp
+python src/yolov5/train_yolowsv5.py --data ./data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml --cfg src/yolov5/models/yolov5sWS.yaml --hyp src/hyp_yolows.yaml --imgs 512 --batch-size 32 --epochs 300 --project ./models/yolov5-ws --name yolov5-ws-imgsz512-no-tiny-segments-full
 ```
 
 2. For regular YOLOv5 training
 
 ```bash
-python3 -m venv yolov5-WS
-source yolov5-WS/bin/activate
+python3 -m venv .yolov5-WS
+source .yolov5-WS/bin/activate
 pip install -r yolov5-requirements.txt
 ```
 
 ```bash
-python src/yolov5/train.py --data ../data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml --imgsz 512 --batch-size 32 --epochs 300 --project models/yolov5 --name yolov5-imgsz512-no-tiny-segments-full
+python src/yolov5/train.py --data ./data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml --imgsz 512 --batch-size 32 --epochs 300 --project ./models/yolov5 --name yolov5-imgsz512-no-tiny-segments-full
 ```
 
 3. For YOLO-WS with Ultralytics YOLOv11 training
 
 ```bash
-python3 -m venv ultralytics
-source ultralytics/bin/activate
+python3 -m venv .ultralytics
+source .ultralytics/bin/activate
 pip install ultralytics
 ```
 
 Then in the console (for standard parameters):
 
 ```bash
-yolo detect train data=../data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml model=yolo11s.pt imgsz=512 batch=32 epochs=300 project=models/yolov11 name=exp
+yolo detect train data=./data/webis-webseg-20-yolo-no-tiny-segments-full/dataset.yaml model=yolo11s.pt imgsz=512 batch=32 epochs=300 project=./models/yolov11 name=yolov11-imgsz512-no-tiny-segments-full
 ```
 
 4. For WEB-SAM training
 
 ```bash
-python3 -m venv websam
-source websam/bin/activate
+python3 -m venv .websam
+source .websam/bin/activate
 pip install -r websam-requirements.txt
 ```
 
 ```bash
-# Note: WEB-SAM already stores outputs in models/websam directory
+# Full training run
+python src/websam/train_websam.py --data ./data/webis-webseg-20-sam-like-on-github-10 --imgsz 1024 --batch_size 2 --epochs 20 --project ./models/websam --name test-run --max_samples 10
 ```
 
+Available parameters:
+- `--data`: Path to the dataset directory
+- `--imgsz`: Image size for training (default: 1024)
+- `--batch_size`: Batch size for training (default: 2)
+- `--epochs`: Number of training epochs (default: 20)
+- `--project`: Directory for saving results (default: "../../models/websam")
+- `--name`: Name of the training run (default: timestamp)
+- `--resume`: Path to run directory to resume training from
+- `--checkpoint`: Path to SAM checkpoint (default: "../../models/websam/websam/sam_vit_b_01ec64.pth")
+- `--lr`: Learning rate (default: 2e-4)
+- `--freeze_encoder`: Flag to freeze encoder weights
+- `--max_samples`: Maximum number of samples to use (for quick testing)

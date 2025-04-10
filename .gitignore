@@ -105,10 +105,11 @@ models/websam/**
 models/yolov5/val/**
 models/yolov11/val*/**
 
-# Virtual environments
-.venv-yolov5/
-.ultralytics/
-.websam_env/
+# Virtual environments and co
+.**/
+**env/
+
+*.pt/
 
 .recycle_bin/
 
