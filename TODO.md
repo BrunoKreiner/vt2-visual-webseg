@@ -1,7 +1,6 @@
-- everything in @
 - Put updated final response into /docs/review_response.txt ☑ 08.04.2025
-
 - Retrain websam with version 3 (@process-webis-webseg-20-websam-better)
+- Add the empty data and models folders to git
 - Highlight and Document the version improvements between process-webis-webseg-20 versions:
     Key Implementation Changes and Improvements
     - From Version 1 to Version 2:

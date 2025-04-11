@@ -195,7 +195,7 @@ class WebSegDataset(Dataset):
         mask = np.load(mask_path)
         
         # Debug: Print mask shape
-        print(f"Loaded mask shape: {mask.shape}, type: {type(mask)}, min: {mask.min()}, max: {mask.max()}")
+        #print(f"Loaded mask shape: {mask.shape}, type: {type(mask)}, min: {mask.min()}, max: {mask.max()}")
 
         # Convert to tensors efficiently
         image = torch.tensor(image).permute(2, 0, 1).contiguous()  # Contiguous for speed
@@ -203,7 +203,7 @@ class WebSegDataset(Dataset):
         mask = torch.tensor(mask, dtype=torch.float32)
         
         # Debug: Print tensor mask shape
-        print(f"Tensor mask shape: {mask.shape}")
+        #print(f"Tensor mask shape: {mask.shape}")
 
         return image, mask #image, boxes, mask
     
